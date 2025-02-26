@@ -1,9 +1,13 @@
 # Planora - Simulador de Organização de Lojas
 ## Descrição
-**Planora** é um aplicativo web projetado para auxiliar na organização de lojas de varejo. Ele funciona como um simulador que permite testar diferentes posicionamentos de itens dentro de um espaço comercial, ajudando a otimizar a disposição dos produtos para melhorar a experiência do cliente e maximizar as vendas.
+**Planora** é um projeto acadêmico desenvolvido com o objetivo de estudar e demonstrar a importância do planejamento na organização de espaços comerciais. Trata-se de um aplicativo web que simula diferentes disposições de produtos dentro de uma loja de varejo, permitindo a análise da eficiência do layout em termos de experiência do cliente e impacto nas vendas.
 
-## Tecnologias 
+### Objetivos
+- Explorar conceitos de experiência do usuário e otimização de espaços comerciais.
+- Aplicar conhecimentos de desenvolvimento web na construção de um sistema interativo.
+- Facilitar a simulação e análise de diferentes disposições de produtos no varejo.
 
+### Tecnologias Utilizadas
 - Frontend: 
 - Backend: [Python]
 - Banco de Dados: 
