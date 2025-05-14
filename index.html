@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./public/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Planora</title>
+</head>
+<body>
+
+<div class="main-division">
+  <div class="header">
+    <div class="left-division">
+    <button class="menu">Home</button>
+    <button class="menu">Elements</button>
+    <button class="menu">Options</button>
+    <button class="menu">View</button>
+    </div>
+    <div class="right-division">
+      <button class="menu">About</button>
+    </div>
+  </div>
+  <div class="general-container">
+    <div class="controls">
+      <div class="actions-container">
+        <div class="header-actions">
+          <button class="context">
+            <i style='font-size:15px' class="fa">&#xf0d9;</i>
+          </button>
+          <button class="context">
+            <i style='font-size:15px' class="fa">&#xf0da;</i>
+          </button>
+          <button class="context" onclick="saveWalls()" >
+            <i style="font-size:15px" class="fa">&#xf0c7;</i>
+          </button>
+          <b>AutoSave</b> <label class="switch">
+          <input type="checkbox">
+          <span class="slider round"></span>
+        </label>
+        </div>
+        <div class="grid">
+          <canvas id="mapCanvas"></canvas>
+        </div>
+      </div>
+      <div class="context-menu">
+        <div class="search-container">
+          <label>
+            <button type="submit" class="search-icon"><i class="fa fa-search"></i></button>
+            <input type="text" placeholder="Search (Ctrl + U)" id="search">
+          </label>
+        </div>
+        <div class="context-inner">
+          <div class="context-item">
+            buttons
+          </div>
+            <div class="context-item-container">
+              Desks
+              <div class="item-right">
+                <button style='font-size:20px' class='fa'>&#xf107;</button>
+              </div>
+            </div>
+            <div class="context-item-container">
+              Shelves
+              <div class="item-right">
+                <button style='font-size:20px' class='fa'>&#xf107;</button>
+              </div>
+            </div>
+            <div class="context-item-container">
+              Windows
+              <div class="item-right">
+                <button style='font-size:20px' class='fa' id="expend">&#xf107;</button>
+              </div>
+            </div>
+            <div class="context-item-container">
+              Doors
+              <div class="item-right">
+                <button style='font-size:20px' class='fa'>&#xf107;</button>
+              </div>
+            </div>
+            <div class="context-item-container">
+              Varied
+              <div class="item-right">
+                <button style='font-size:20px' class='fa'>&#xf107;</button>
+              </div>
+            </div>
+          <i style='font-size:24px' class="fa">&#xf104;</i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    project name
+    site language
+  </div>
+</div>
+
+<script>
+
+  const canvas = document.getElementById('mapCanvas');
+  const ctx = canvas.getContext('2d');
+
+  cellsize = 9;
+  scale = 2;
+  offsetx = 0;
+  offsety = 0;
+
+  function toScreenX(xTrue) {
+    return (xTrue + offsetx) * scale;
+  }
+  function toScreenY(yTrue) {
+    return (yTrue + offsety) * scale;
+  }
+  function toTrueX(xScreen) {
+    return (xScreen / scale) - offsetx;
+  }
+  function toTrueY(yScreen) {
+    return (yScreen / scale) - offsety;
+  }
+  function trueHeight() {
+    return canvas.clientHeight / scale;
+  }
+  function trueWidth() {
+    return canvas.clientWidth / scale;
+  }
+
+  function draw() {
+    if (canvas && ctx){
+      canvas.style.width='100%';
+      canvas.style.height='100%';
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawGrid();
+    }
+  }
+
+  document.oncontextmenu = function () {
+    return false;
+  }
+
+  canvas.addEventListener('mousedown', onMouseDown);
+  canvas.addEventListener('mouseup', onMouseUp, false);
+  canvas.addEventListener('mouseout', onMouseUp, false);
+  canvas.addEventListener('mousemove', onMouseMove, false);
+  canvas.addEventListener('wheel', onMouseWheel, false);
+
+  let leftMouseDown = false;
+  let rightMouseDown = false;
+  let walls = [];
+  let isDrawing = false;
+  let startPoint = null;
+  let currentPoint = null;
+
+  function snapToGrid(x, y) {
+    const gridX = Math.round(x / cellsize) * cellsize;
+    const gridY = Math.round(y / cellsize) * cellsize;
+    return { x: gridX, y: gridY };
+  }
+
+  function onMouseDown(event) {
+
+    if (event.button === 0) {
+      leftMouseDown = true;
+      rightMouseDown = false;
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      const scaledX = toTrueX(x);
+      const scaledY = toTrueY(y);
+      const snappedPoint = snapToGrid(scaledX, scaledY);
+
+      if (!isDrawing) {
+        isDrawing = true;
+        startPoint = snappedPoint;
+        currentPoint = snappedPoint;
+      } else {
+        walls.push({
+          from: startPoint,
+          to: snappedPoint
+        });
+        isDrawing = false;
+        startPoint = null;
+        currentPoint = null;
+        draw();
+      }
+    }
+    if (event.button === 2) {
+      rightMouseDown = true;
+      leftMouseDown = false;
+    }
+
+    cursorX = event.clientX;
+    cursorY = event.clientY;
+    prevCursorX = event.clientX;
+    prevCursorY = event.clientY;
+  }
+
+  function onMouseMove(event) {
+    const rect = canvas.getBoundingClientRect();
+    const cursorX = event.clientX - rect.left;
+    const cursorY = event.clientY - rect.top;
+    const scaledX = toTrueX(cursorX);
+    const scaledY = toTrueY(cursorY);
+    const prevScaledX = toTrueX(prevCursorX);
+    const prevScaledY = toTrueY(prevCursorY);
+    if (isDrawing) {
+      currentPoint = snapToGrid(scaledX, scaledY);
+      draw();
+    }
+    if (rightMouseDown) {
+      offsetx += (cursorX - prevCursorX) / scale;
+      offsety += (cursorY - prevCursorY) / scale;
+      draw();
+    }
+    prevCursorX = cursorX;
+    prevCursorY = cursorY;
+  }
+  function onMouseUp() {
+    leftMouseDown = false;
+    rightMouseDown = false;
+  }
+  function onMouseWheel(event) {
+    const deltaY = event.deltaY;
+    const scaleAmount = -deltaY / 500;
+    scale = scale * (1 + scaleAmount);
+
+    const distX = event.pageX / canvas.clientWidth;
+    const distY = event.pageY / canvas.clientHeight;
+
+    const unitsZoomedX = trueWidth() * scaleAmount;
+    const unitsZoomedY = trueHeight() * scaleAmount;
+
+    const unitsAddLeft = unitsZoomedX * distX;
+    const unitsAddTop = unitsZoomedY * distY;
+
+    offsetx -= unitsAddLeft;
+    offsety -= unitsAddTop;
+
+    draw();
+  }
+
+  window.addEventListener("resize", (event) => {
+    draw();
+  });
+
+  function drawGrid() {
+    if (canvas && ctx){
+      ctx.strokeStyle = '#00000049';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      canvas.style.width='100%';
+      canvas.style.height='100%';
+      const width = canvas.offsetWidth;
+      const height = canvas.offsetHeight;
+      for (
+              let x = (offsetx % cellsize) * scale;
+              x <= width;
+              x += cellsize * scale
+      ) {
+        const source = x;
+        ctx.moveTo(source, 0);
+        ctx.lineTo(source, height);
+      }
+
+      for (
+              let y = (offsety % cellsize) * scale;
+              y <= height;
+              y += cellsize * scale
+      ) {
+        const destination = y;
+        ctx.moveTo(0, destination);
+        ctx.lineTo(width, destination);
+      }
+      ctx.stroke();
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 8;
+      walls.forEach(wall => {
+        ctx.beginPath();
+        ctx.moveTo(toScreenX(wall.from.x), toScreenY(wall.from.y));
+        ctx.lineTo(toScreenX(wall.to.x), toScreenY(wall.to.y));
+        ctx.stroke();
+      });
+
+      if (isDrawing && startPoint && currentPoint) {
+        ctx.strokeStyle = '#0000007B';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(toScreenX(startPoint.x), toScreenY(startPoint.y));
+        ctx.lineTo(toScreenX(currentPoint.x), toScreenY(currentPoint.y));
+        ctx.stroke();
+      }
+    }
+  }
+
+  function updateJSON() {
+    document.getElementById('jsonOutput').textContent = JSON.stringify(walls, null, 2);
+  }
+  function saveWalls() {
+    const jsonString = JSON.stringify(walls, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    a.download = `Mapas/mapa_${timestamp}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  setInterval(() => {
+    if (walls.length > 0) {
+      saveWalls();
+    }
+  }, 5 * 60 * 1000);
+  draw();
+</script>
+
+</body>
+</html>
