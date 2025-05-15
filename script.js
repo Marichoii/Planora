@@ -111,6 +111,31 @@ function snapToGrid(x, y) {
   return { x: gridX, y: gridY };
 }
 
+// Função de snap com magnetismo nos vértices
+function snapToGridWithMagnet(x, y) {
+  // Snap normal ao grid
+  const gridX = Math.round(x / cellsize) * cellsize;
+  const gridY = Math.round(y / cellsize) * cellsize;
+  let snapped = { x: gridX, y: gridY };
+
+  // Distância de tolerância para o magnetismo (em unidades reais)
+  const tolerance = 10;
+
+  // Procura por pontos próximos nos endpoints das linhas existentes
+  for (const wall of walls) {
+    const points = [wall.from, wall.to];
+    for (const pt of points) {
+      const dist = Math.hypot(pt.x - snapped.x, pt.y - snapped.y);
+      if (dist <= tolerance) {
+        // Se estiver perto o suficiente, "gruda" no ponto existente
+        return { x: pt.x, y: pt.y };
+      }
+    }
+  }
+  // Se não achou nenhum ponto próximo, retorna o snap normal
+  return snapped;
+}
+
 function onMouseDown(event) {
   if (event.button === 0) {
     leftMouseDown = true;
@@ -120,7 +145,7 @@ function onMouseDown(event) {
     const y = event.clientY - rect.top;
     const scaledX = toTrueX(x);
     const scaledY = toTrueY(y);
-    const snappedPoint = snapToGrid(scaledX, scaledY);
+    const snappedPoint = snapToGridWithMagnet(scaledX, scaledY);
 
     if (!isDrawing) {
       isDrawing = true;
@@ -159,7 +184,7 @@ function onMouseMove(event) {
   const prevScaledX = toTrueX(prevCursorX);
   const prevScaledY = toTrueY(prevCursorY);
   if (isDrawing) {
-    currentPoint = snapToGrid(scaledX, scaledY);
+    currentPoint = snapToGridWithMagnet(scaledX, scaledY);
     draw();
   }
   if (rightMouseDown) {
@@ -205,12 +230,12 @@ function drawGrid() {
     canvas.style.height = '100%';
     const width = canvas.offsetWidth;
     const height = canvas.offsetHeight;
-    
+
     // Desenha a grade
     for (
-      let x = (offsetx % cellsize) * scale;
-      x <= width;
-      x += cellsize * scale
+        let x = (offsetx % cellsize) * scale;
+        x <= width;
+        x += cellsize * scale
     ) {
       const source = x;
       ctx.moveTo(source, 0);
@@ -218,9 +243,9 @@ function drawGrid() {
     }
 
     for (
-      let y = (offsety % cellsize) * scale;
-      y <= height;
-      y += cellsize * scale
+        let y = (offsety % cellsize) * scale;
+        y <= height;
+        y += cellsize * scale
     ) {
       const destination = y;
       ctx.moveTo(0, destination);
@@ -232,20 +257,31 @@ function drawGrid() {
     walls.forEach(wall => {
       const style = elementStyles[wall.type] || elementStyles.wall;
       const color = elementColors[wall.type] || elementColors.wall;
-      
+
       ctx.strokeStyle = color + style.opacity;
       ctx.lineWidth = style.width;
       ctx.beginPath();
       ctx.moveTo(toScreenX(wall.from.x), toScreenY(wall.from.y));
       ctx.lineTo(toScreenX(wall.to.x), toScreenY(wall.to.y));
       ctx.stroke();
+
+      // Desenha círculo no início
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(toScreenX(wall.from.x), toScreenY(wall.from.y), style.width / 1.5, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Desenha círculo no fim
+      ctx.beginPath();
+      ctx.arc(toScreenX(wall.to.x), toScreenY(wall.to.y), style.width / 1.5, 0, 2 * Math.PI);
+      ctx.fill();
     });
 
     // Desenha a linha temporária durante o desenho
     if (isDrawing && startPoint && currentPoint) {
       const style = elementStyles[selectedElementType] || elementStyles.wall;
       const color = elementColors[selectedElementType] || elementColors.wall;
-      
+
       ctx.strokeStyle = color + '7B'; // Adiciona transparência
       ctx.lineWidth = style.width;
       ctx.beginPath();
