@@ -88,10 +88,20 @@ body {
   display: flex;
   flex-direction: row;
   margin: 1rem;
-  padding: 0.5rem;
+  padding: 8px;
   border: 1px solid #f6f6f6;
   border-radius: 0.3rem;
   justify-content: space-between;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.context-item-container:hover {
+  background-color: #f0f0f0;
+}
+
+.context-item-container.selected {
+  background-color: #e0e0e0;
 }
 
 .grid {
@@ -216,4 +226,15 @@ input:checked + .slider:before {
   z-index: 10;
   display: flex;
   column-gap: 0.5rem;
+}
+
+.element-select {
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.element-select:hover {
+  background-color: #f0f0f0;
 }
