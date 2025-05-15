@@ -230,12 +230,12 @@ function drawGrid() {
     canvas.style.height = '100%';
     const width = canvas.offsetWidth;
     const height = canvas.offsetHeight;
-    
+
     // Desenha a grade
     for (
-      let x = (offsetx % cellsize) * scale;
-      x <= width;
-      x += cellsize * scale
+        let x = (offsetx % cellsize) * scale;
+        x <= width;
+        x += cellsize * scale
     ) {
       const source = x;
       ctx.moveTo(source, 0);
@@ -243,9 +243,9 @@ function drawGrid() {
     }
 
     for (
-      let y = (offsety % cellsize) * scale;
-      y <= height;
-      y += cellsize * scale
+        let y = (offsety % cellsize) * scale;
+        y <= height;
+        y += cellsize * scale
     ) {
       const destination = y;
       ctx.moveTo(0, destination);
@@ -257,7 +257,7 @@ function drawGrid() {
     walls.forEach(wall => {
       const style = elementStyles[wall.type] || elementStyles.wall;
       const color = elementColors[wall.type] || elementColors.wall;
-      
+
       ctx.strokeStyle = color + style.opacity;
       ctx.lineWidth = style.width;
       ctx.beginPath();
@@ -281,7 +281,7 @@ function drawGrid() {
     if (isDrawing && startPoint && currentPoint) {
       const style = elementStyles[selectedElementType] || elementStyles.wall;
       const color = elementColors[selectedElementType] || elementColors.wall;
-      
+
       ctx.strokeStyle = color + '7B'; // Adiciona transparência
       ctx.lineWidth = style.width;
       ctx.beginPath();
