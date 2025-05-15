@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login</title>
+  <link rel="stylesheet" href="./RGstyle.css" />
+</head>
+<body>
+  <div class="register-container">
+    <h2>Faça Login</h2>
+    <form id="LoginForm">
+      <input type="text" name="username" placeholder="Username" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="password" name="senha" placeholder="Senha" required />
+      <button type="submit">Entrar</button>
+      <p><br>Não tem uma conta?<a href="Register.html"><br>Registre-se!</a></p>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("LoginForm").addEventListener("submit", function (evento) {
+      evento.preventDefault(); 
+
+    
+      const Formulario = {
+        username: this.username.value,
+        email: this.email.value,
+        senha: this.senha.value,
+      };
+
+      
+      const jsonString = JSON.stringify(Formulario, null, 2);
+      console.log("JSON Estruturado:", jsonString);
+
+      this.reset();
+    });
+  </script>
+</body>
+</html>
