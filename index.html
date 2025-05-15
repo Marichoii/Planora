@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Planora</title>
+</head>
+<body>
+
+<div class="main-division">
+  <div class="header">
+    <div class="left-division">
+    <button class="menu">Home</button>
+    <button class="menu">Elements</button>
+    <button class="menu">Options</button>
+    <button class="menu">View</button>
+    </div>
+    <div class="right-division">
+      <button class="menu">About</button>
+    </div>
+  </div>
+  <div class="general-container">
+    <div class="controls">
+      <div class="actions-container">
+        <div class="header-actions">
+          <button class="context">
+            <i style='font-size:15px' class="fa">&#xf0d9;</i>
+          </button>
+          <button class="context">
+            <i style='font-size:15px' class="fa">&#xf0da;</i>
+          </button>
+          <button class="context" onclick="saveWalls()" >
+            <i style="font-size:15px" class="fa">&#xf0c7;</i>
+          </button>
+          <b>AutoSave</b> <label class="switch">
+          <input type="checkbox">
+          <span class="slider round"></span>
+        </label>
+        </div>
+        <div class="grid">
+          <canvas id="mapCanvas"></canvas>
+        </div>
+      </div>
+      <div class="context-menu">
+        <div class="search-container">
+          <label>
+            <button type="submit" class="search-icon"><i class="fa fa-search"></i></button>
+            <input type="text" placeholder="Search (Ctrl + U)" id="search">
+          </label>
+        </div>
+        <div class="context-inner">
+          <div class="context-item">
+            buttons
+          </div>
+            <div class="context-item-container">
+              Desks
+              <div class="item-right">
+                <button style='font-size:20px' class='fa element-select' data-type="desk">&#xf107;</button>
+              </div>
+            </div>
+            <div class="context-item-container">
+              Shelves
+              <div class="item-right">
+                <button style='font-size:20px' class='fa element-select' data-type="shelf">&#xf107;</button>
+              </div>
+            </div>
+            <div class="context-item-container">
+              Windows
+              <div class="item-right">
+                <button style='font-size:20px' class='fa element-select' data-type="window">&#xf107;</button>
+              </div>
+            </div>
+            <div class="context-item-container">
+              Doors
+              <div class="item-right">
+                <button style='font-size:20px' class='fa element-select' data-type="door">&#xf107;</button>
+              </div>
+            </div>
+            <div class="context-item-container">
+              Varied
+              <div class="item-right">
+                <button style='font-size:20px' class='fa element-select' data-type="varied">&#xf107;</button>
+              </div>
+            </div>
+          <i style='font-size:24px' class="fa">&#xf104;</i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    project name
+    site language
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
