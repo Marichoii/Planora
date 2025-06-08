@@ -1,42 +1,55 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registrar</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="RGstyle.css">
-</head>
-<body>
-  <div class="register-container">
-    <h2>Registrar</h2>
-    <form id="registerForm">
-      <input type="text" name="username" placeholder="Usuário" required />
-      <input type="email" name="email" placeholder="Email" required />
-      <input type="password" name="senha" placeholder="Senha" required />
-      <button type="submit">Registrar</button>
-      <p><br>Já tem uma conta? <a href="login.html">Faça login</a></p>
-      <p><a href="index.html">Voltar para o início</a></p>
-    </form>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registrar</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="RGstyle.css" />
+  </head>
+  <body>
+    <div class="register-container">
+      <h2>Registrar</h2>
+      <form id="registerForm">
+        <input type="text" name="username" placeholder="Usuário" required />
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="senha" placeholder="Senha" required />
+        <button type="submit">Registrar</button>
+        <p><br />Já tem uma conta? <a href="login.html">Faça login</a></p>
+        <p><a href="index.html">Voltar para o início</a></p>
+      </form>
+    </div>
 
-  <script>
-    document.getElementById("registerForm").addEventListener("submit", function (evento) {
-      evento.preventDefault(); 
+    <script>
+      document
+        .getElementById("registerForm")
+        .addEventListener("submit", function (evento) {
+          evento.preventDefault();
 
-    
-      const Formulario = {
-        username: this.username.value,
-        email: this.email.value,
-        senha: this.senha.value,
-      };
+          const Formulario = {
+            username: this.username.value,
+            email: this.email.value,
+            senha: this.senha.value,
+          };
 
-      
-      const jsonString = JSON.stringify(Formulario, null, 2);
-      console.log("JSON Estruturado:", jsonString);
-      
-      this.reset();
-    });
-  </script>
-</body>
+          fetch("http://localhost:3000/registrar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(Formulario),
+          })
+            .then((response) => {
+              if (!response.ok) throw new Error("Erro ao registrar");
+              return response.text();
+            })
+            .then((msg) => {
+              window.location.href = 'login.html';
+              this.reset();
+            })
+            .catch((error) => {
+              console.error("Erro:", error);
+              alert("Falha ao registrar. Tente novamente.");
+            });
+        });
+    </script>
+  </body>
 </html>
