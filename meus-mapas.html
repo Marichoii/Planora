@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meus Mapas - Planora</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .mapas-container {
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .mapas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .mapa-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 15px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .mapa-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .mapa-card h3 {
+      margin: 0 0 10px 0;
+      color: #333;
+    }
+
+    .mapa-card .data {
+      color: #666;
+      font-size: 0.9em;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      margin: 0;
+      color: #333;
+    }
+
+    .btn-novo {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background 0.2s;
+    }
+
+    .btn-novo:hover {
+      background: #45a049;
+    }
+
+    .sem-mapas {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="mapas-container">
+    <div class="header">
+      <h1>Meus Mapas</h1>
+      <button class="btn-novo" onclick="window.location.href='construtor.html'">Novo Mapa</button>
+    </div>
+    <div id="mapas-grid" class="mapas-grid">
+      <!-- Os mapas serão inseridos aqui via JavaScript -->
+    </div>
+  </div>
+
+  <script>
+    // Função para formatar a data
+    function formatarData(dataString) {
+      const data = new Date(dataString);
+      return data.toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    // Função para carregar os mapas
+    async function carregarMapas() {
+      const userId = localStorage.getItem('userId');
+      if (!userId) {
+        window.location.href = 'Login.html';
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:3001/mapas/${userId}`);
+        if (!response.ok) {
+          throw new Error('Erro ao carregar mapas');
+        }
+
+        const mapas = await response.json();
+        const grid = document.getElementById('mapas-grid');
+
+        if (mapas.length === 0) {
+          grid.innerHTML = `
+            <div class="sem-mapas">
+              <h2>Você ainda não tem mapas salvos</h2>
+              <p>Crie seu primeiro mapa clicando no botão "Novo Mapa"</p>
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = mapas.map(mapa => `
+          <div class="mapa-card" onclick="editarMapa('${mapa._id}')">
+            <h3>${mapa.nome}</h3>
+            <div class="data">
+              Criado em: ${formatarData(mapa.dataCriacao)}<br>
+              Última atualização: ${formatarData(mapa.dataAtualizacao)}
+            </div>
+          </div>
+        `).join('');
+      } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao carregar mapas. Tente novamente.');
+      }
+    }
+
+    // Função para editar um mapa
+    function editarMapa(mapaId) {
+      localStorage.setItem('mapaEditando', mapaId);
+      window.location.href = 'construtor.html';
+    }
+
+    // Carregar mapas quando a página carregar
+    window.onload = carregarMapas;
+  </script>
+</body>
+</html> 

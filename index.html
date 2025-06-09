@@ -6,6 +6,12 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <title>Planora</title>
+  <script>
+    // Redireciona para a página de registro se estiver na raiz
+    if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+      window.location.href = 'Register.html';
+    }
+  </script>
 </head>
 <body>
 

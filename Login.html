@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
-  <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="RGstyle.css">
 </head>
 <body>
@@ -30,19 +29,22 @@
       senha: this.senha.value,
     };
 
-    fetch('http://localhost:3000/login', {
+    fetch('http://localhost:3001/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(Formulario),
     })
     .then(response => {
       if (!response.ok) throw new Error("Login falhou");
-      return response.text();
+      return response.json();
     })
-    .then(msg => {
-      alert(msg);
+    .then(data => {
+      alert(data.message);
+      console.log('Dados do login:', data);
+      localStorage.setItem('userId', data.userId);
+      console.log('userId salvo:', data.userId);
       this.reset();
-      window.location.href = "index.html";
+      window.location.href = "construtor.html";
     })
     .catch(err => {
       console.error("Erro:", err);

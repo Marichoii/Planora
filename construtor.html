@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Planora - Construtor</title>
+  <style>
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 8px;
+    }
+
+    .modal-content input {
+      width: 100%;
+      padding: 8px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .modal-content button {
+      padding: 8px 16px;
+      margin: 5px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .modal-content .save-btn {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .modal-content .cancel-btn {
+      background-color: #f44336;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<div class="main-division">
+  <div class="header">
+    <div class="left-division">
+    <button class="menu">Home</button>
+    <button class="menu">Elements</button>
+    <button class="menu">Options</button>
+    <button class="menu">View</button>
+    </div>
+    <div class="right-division">
+      <button class="menu" onclick="window.location.href='meus-mapas.html'">Meus Mapas</button>
+      <button class="menu" onclick="window.location.href='Login.html'">Login</button>
+      <button class="menu" onclick="window.location.href='Register.html'">Registrar</button>
+      <button class="menu">About</button>
+    </div>
+  </div>
+  <div class="general-container">
+    <div class="controls">
+      <div class="actions-container">
+        <div class="header-actions">
+          <button class="context">
+            <i style='font-size:15px' class="fa">&#xf0d9;</i>
+          </button>
+          <button class="context">
+            <i style='font-size:15px' class="fa">&#xf0da;</i>
+          </button>
+          <button class="context" onclick="abrirModalSalvar()">
+            <i style="font-size:15px" class="fa">&#xf0c7;</i>
+          </button>
+          <b>AutoSave</b> <label class="switch">
+          <input type="checkbox">
+          <span class="slider round"></span>
+        </label>
+        </div>
+        <div class="grid">
+          <canvas id="mapCanvas"></canvas>
+        </div>
+      </div>
+      <div class="context-menu">
+        <div class="search-container">
+          <label>
+            <button type="submit" class="search-icon"><i class="fa fa-search"></i></button>
+            <input type="text" placeholder="Search (Ctrl + U)" id="search">
+          </label>
+        </div>
+        <div class="context-inner">
+          <div class="context-item">
+            buttons
+          </div>
+            <div class="context-item-container">
+              Desks
+              <div class="item-right">
+                <button style='font-size:20px' class='fa element-select' data-type="desk">&#xf107;</button>
+              </div>
+            </div>
+            <div class="context-item-container">
+              Shelves
+              <div class="item-right">
+                <button style='font-size:20px' class='fa element-select' data-type="shelf">&#xf107;</button>
+              </div>
+            </div>
+            <div class="context-item-container">
+              Windows
+              <div class="item-right">
+                <button style='font-size:20px' class='fa element-select' data-type="window">&#xf107;</button>
+              </div>
+            </div>
+            <div class="context-item-container">
+              Doors
+              <div class="item-right">
+                <button style='font-size:20px' class='fa element-select' data-type="door">&#xf107;</button>
+              </div>
+            </div>
+            <div class="context-item-container">
+              Varied
+              <div class="item-right">
+                <button style='font-size:20px' class='fa element-select' data-type="varied">&#xf107;</button>
+              </div>
+            </div>
+          <i style='font-size:24px' class="fa">&#xf104;</i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    project name
+    site language
+  </div>
+</div>
+
+<!-- Modal para salvar mapa -->
+<div id="saveModal" class="modal">
+  <div class="modal-content">
+    <h2>Salvar Mapa</h2>
+    <input type="text" id="mapaNome" placeholder="Nome do mapa" required>
+    <div style="text-align: right;">
+      <button class="cancel-btn" onclick="fecharModalSalvar()">Cancelar</button>
+      <button class="save-btn" onclick="salvarMapa()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+// Função para obter o userId do localStorage
+function getUserId() {
+  return localStorage.getItem('userId');
+}
+
+// Função para abrir o modal de salvar
+function abrirModalSalvar() {
+  document.getElementById('saveModal').style.display = 'block';
+}
+
+// Função para fechar o modal de salvar
+function fecharModalSalvar() {
+  document.getElementById('saveModal').style.display = 'none';
+}
+
+// Função para salvar o mapa
+async function salvarMapa() {
+  const userId = getUserId();
+  if (!userId) {
+    alert('Você precisa estar logado para salvar o mapa!');
+    window.location.href = 'Login.html';
+    return;
+  }
+
+  const nome = document.getElementById('mapaNome').value;
+  if (!nome) {
+    alert('Por favor, insira um nome para o mapa!');
+    return;
+  }
+
+  try {
+    const dados = {
+      walls: walls,
+      elements: []
+    };
+
+    console.log('Dados a serem salvos:', dados);
+
+    const response = await fetch('http://localhost:3001/salvar-mapa', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        userId,
+        nome,
+        dados
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('Erro do servidor:', errorData);
+      throw new Error('Erro ao salvar mapa: ' + errorData);
+    }
+
+    const result = await response.json();
+    alert('Mapa salvo com sucesso!');
+    fecharModalSalvar();
+  } catch (error) {
+    console.error('Erro:', error);
+    alert('Erro ao salvar o mapa. Tente novamente.');
+  }
+}
+
+// Verificar se o usuário está logado ao carregar a página
+window.onload = async function() {
+  const userId = getUserId();
+  if (!userId) {
+    alert('Você precisa estar logado para acessar o construtor!');
+    window.location.href = 'Login.html';
+    return;
+  }
+
+  // Verificar se está editando um mapa existente
+  const mapaId = localStorage.getItem('mapaEditando');
+  if (mapaId) {
+    try {
+      const response = await fetch(`http://localhost:3001/mapa/${mapaId}`);
+      if (!response.ok) {
+        throw new Error('Erro ao carregar mapa');
+      }
+
+      const mapa = await response.json();
+      // Carregar os dados do mapa
+      walls = mapa.dados.walls || [];
+      // Atualizar o título da página
+      document.title = `Editando: ${mapa.nome} - Planora`;
+      // Limpar o ID do mapa sendo editado
+      localStorage.removeItem('mapaEditando');
+      // Redesenhar o canvas
+      draw();
+    } catch (error) {
+      console.error('Erro ao carregar mapa:', error);
+      alert('Erro ao carregar o mapa. Tente novamente.');
+    }
+  }
+};
+</script>
+</body>
+</html> 
