@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,94 +10,130 @@
 
   <title>Planora</title>
 </head>
+
 <body>
-
-<div class="main-division">
-  <div class="header">
-    <div class="left-division">
-    <a href="home.html"><button class="menu">Home</button></a>
-    <button class="menu">Elements</button>
-    <button class="menu">Options</button>
-    <button class="menu">View</button>
-    </div>
-    <div class="right-division">
-      <button class="menu">About</button>
-    </div>
-  </div>
-  <div class="general-container">
-    <div class="controls">
-      <div class="actions-container">
-        <div class="header-actions">
-          <button class="context">
-            <i style='font-size:15px' class="fa">&#xf0d9;</i>
-          </button>
-          <button class="context">
-            <i style='font-size:15px' class="fa">&#xf0da;</i>
-          </button>
-          <button class="context" onclick="saveWalls()" >
-            <i style="font-size:15px" class="fa">&#xf0c7;</i>
-          </button>
-          <b>AutoSave</b> <label class="switch">
-          <input type="checkbox">
-          <span class="slider round"></span>
-        </label>
-        </div>
-        <div class="grid">
-          <canvas id="mapCanvas"></canvas>
-        </div>
+  <div class="main-division">
+    <div class="header">
+      <div class="left-division">
+        <a href="home.html"><button class="menu">Home</button></a>
+        <button class="menu">Elements</button>
+        <button class="menu">Options</button>
+        <button class="menu">View</button>
       </div>
-      <div class="context-menu">
-        <div class="search-container">
-          <label>
-            <button type="submit" class="search-icon"><i class="fa fa-search"></i></button>
-            <input type="text" placeholder="Search (Ctrl + U)" id="search">
-          </label>
-        </div>
-        <div class="context-inner">
-          <div class="context-item">
-            buttons
+      <div class="right-division">
+        <button class="menu">About</button>
+      </div>
+    </div>
+    <div class="general-container">
+      <div class="controls">
+        <div class="actions-container">
+          <div class="header-actions">
+            <button class="context">
+              <i style='font-size:15px' class="fa">&#xf0d9;</i>
+            </button>
+            <button class="context">
+              <i style='font-size:15px' class="fa">&#xf0da;</i>
+            </button>
+            <button class="context" onclick="saveWalls()">
+              <i style="font-size:15px" class="fa">&#xf0c7;</i>
+            </button>
+            <b>AutoSave</b> <label class="switch">
+              <input type="checkbox">
+              <span class="slider round"></span>
+            </label>
           </div>
-            <div class="context-item-container">
-              Desks
-              <div class="item-right">
-                <button style='font-size:20px' class='fa element-select' data-type="desk">&#xf107;</button>
-              </div>
+          <div class="grid">
+            <canvas id="mapCanvas"></canvas>
+          </div>
+        </div>
+        <div class="context-menu">
+          <div class="search-container">
+            <label>
+              <button type="submit" class="search-icon"><i class="fa fa-search"></i></button>
+              <input type="text" placeholder="Search (Ctrl + U)" id="search">
+            </label>
+          </div>
+
+          <div class="context-inner">
+            <div class="context-item">
+              <button class="context-item-header"><i class="fa-solid fa-pencil"></i></button>
+              <button class="context-item-header"><i class="fa-regular fa-image"></i></button>
+              <button class="context-item-header"><i class="fa-solid fa-triangle-exclamation"></i></button>
+              <button class="context-item-header"><i class="fa-regular fa-message"></i></button>
+              <button class="context-item-header"><i class="fa-solid fa-up-down-left-right"></i></button>
+              <button class="context-item-header"><i class="fa-regular fa-circle-question"></i></button>
             </div>
-            <div class="context-item-container">
-              Shelves
-              <div class="item-right">
-                <button style='font-size:20px' class='fa element-select' data-type="shelf">&#xf107;</button>
-              </div>
+          </div>
+
+          <div class="context-item-container">
+            Desks
+            <div class="item-right">
+              <button style="font-size:20px" class="fa element-select toggle-submenu"
+                data-target="submenu-desks">&#xf107;</button>
             </div>
-            <div class="context-item-container">
-              Windows
-              <div class="item-right">
-                <button style='font-size:20px' class='fa element-select' data-type="window">&#xf107;</button>
-              </div>
+          </div>
+          <div id="submenu-desks" class="submenu hidden">
+            <div class="submenu-item">Desk 1</div>
+            <div class="submenu-item">Desk 2</div>
+          </div>
+
+          <div class="context-item-container">
+            Shelves
+            <div class="item-right">
+              <button style="font-size:20px" class="fa element-select toggle-submenu"
+                data-target="submenu-shelves">&#xf107;</button>
             </div>
-            <div class="context-item-container">
-              Doors
-              <div class="item-right">
-                <button style='font-size:20px' class='fa element-select' data-type="door">&#xf107;</button>
-              </div>
+          </div>
+          <div id="submenu-shelves" class="submenu hidden">
+            <div class="submenu-item">Shelf 1</div>
+          </div>
+
+          <div class="context-item-container">
+            Windows
+            <div class="item-right">
+              <button style="font-size:20px" class="fa element-select toggle-submenu"
+                data-target="submenu-windows">&#xf107;</button>
             </div>
-            <div class="context-item-container">
-              Varied
-              <div class="item-right">
-                <button style='font-size:20px' class='fa element-select' data-type="varied">&#xf107;</button>
-              </div>
+          </div>
+          <div id="submenu-windows" class="submenu hidden">
+            <div class="submenu-item">Window 1</div>
+          </div>
+
+          <div class="context-item-container">
+            Doors
+            <div class="item-right">
+              <button style="font-size:20px" class="fa element-select toggle-submenu"
+                data-target="submenu-doors">&#xf107;</button>
             </div>
-          <i style='font-size:24px' class="fa">&#xf104;</i>
+          </div>
+          <div id="submenu-doors" class="submenu hidden">
+            <div class="submenu-item">Door 1</div>
+          </div>
+
+          <div class="context-item-container">
+            Varied
+            <div class="item-right">
+              <button style="font-size:20px" class="fa element-select toggle-submenu"
+                data-target="submenu-varied">&#xf107;</button>
+            </div>
+          </div>
+          <div id="submenu-varied" class="submenu hidden">
+            <div class="submenu-item">Varied 1</div>
+          </div>
+
+          <div id="left">
+          <i style="font-size:24px" class="fa">&#xf104;</i>
+          </div>
+
         </div>
       </div>
+      <div class="footer">
+        project name
+        site language
+      </div>
     </div>
-  </div>
-  <div class="footer">
-    project name
-    site language
-  </div>
-</div>
 
-<script src="/js/script.js"></script>
+    <script src="/js/script.js"></script>
 </body>
+
 </html>

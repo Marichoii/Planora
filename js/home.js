@@ -39,11 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // --- FECHAR modais ---
     closeModal?.addEventListener('click', () => loginModal.classList.add('hidden'));
     closeRegisterModal?.addEventListener('click', () => registerModal.classList.add('hidden'));
 
-    // --- Trocar entre Login/Registro ---
     openRegister?.addEventListener('click', () => {
         loginModal.classList.add('hidden');
         registerModal.classList.remove('hidden');

@@ -37,7 +37,7 @@ const elementStyles = {
 
 // Adiciona event listeners para os botões de seleção de elemento
 document.querySelectorAll('.element-select').forEach(button => {
-  button.addEventListener('click', function() {
+  button.addEventListener('click', function () {
     selectedElementType = this.dataset.type;
     // Remove a classe ativa de todos os botões
     document.querySelectorAll('.element-select').forEach(btn => {
@@ -233,9 +233,9 @@ function drawGrid() {
 
     // Desenha a grade
     for (
-        let x = (offsetx % cellsize) * scale;
-        x <= width;
-        x += cellsize * scale
+      let x = (offsetx % cellsize) * scale;
+      x <= width;
+      x += cellsize * scale
     ) {
       const source = x;
       ctx.moveTo(source, 0);
@@ -243,9 +243,9 @@ function drawGrid() {
     }
 
     for (
-        let y = (offsety % cellsize) * scale;
-        y <= height;
-        y += cellsize * scale
+      let y = (offsety % cellsize) * scale;
+      y <= height;
+      y += cellsize * scale
     ) {
       const destination = y;
       ctx.moveTo(0, destination);
@@ -317,7 +317,7 @@ canvas.addEventListener('mouseout', onMouseUp, false);
 canvas.addEventListener('mousemove', onMouseMove, false);
 canvas.addEventListener('wheel', onMouseWheel, false);
 
-document.addEventListener('keydown', function(event) {
+document.addEventListener('keydown', function (event) {
   if (event.ctrlKey) {
     if (event.key === 'z') {
       event.preventDefault();
@@ -333,12 +333,27 @@ window.addEventListener("resize", (event) => {
   draw();
 });
 
-// Auto-save a cada 5 minutos
 setInterval(() => {
   if (walls.length > 0) {
     saveWalls();
   }
 }, 5 * 60 * 1000);
 
-// Inicialização
-draw(); 
+draw();
+
+// Elementos de interface
+document.querySelectorAll('.context-item-header').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.classList.toggle('clicked');
+  });
+});
+
+const sideMenu = document.getElementById('sideMenu');
+const toggleButton = document.getElementById('toggleMenu');
+
+toggleButton.addEventListener('click', () => {
+  sideMenu.classList.toggle('closed');
+});
+
+
+
