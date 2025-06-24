@@ -31,4 +31,4 @@ cd Planora
 > Dica: Por tratar-se de um projeto apenas com HTML, CSS e JavaScript, não é necessário configurar um servidor web. Contudo, se você encontrar problemas de permissão ao abrir localmente, pode servir os arquivos usando ferramentas simples (como a extensão Live Server do VSCode) para garantir que todos os recursos sejam carregados corretamente.
 
 ## Licença
-Este projeto está licenciado sob a MIT License. Veja o arquivo [LICENSE](LICENSE/). para obter mais detalhes.
+Este projeto está licenciado sob a MIT License. Veja o arquivo [LICENSE](LICENSE). para obter mais detalhes.
