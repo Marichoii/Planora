@@ -5,8 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="css/styles.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <title>Planora</title>
 </head>
@@ -16,28 +16,49 @@
     <div class="header">
       <div class="left-division">
         <a href="home.html"><button class="menu">Home</button></a>
-        <button class="menu">Elements</button>
-        <button class="menu">Options</button>
-        <button class="menu">View</button>
+
+        <div class="dropdown-container">
+          <button class="menu dropdown-toggle">Elements</button>
+          <div class="dropdown hidden">
+            <a href="#">Grid</a>
+            <a href="#">Shelf</a>
+            <a href="#">Text</a>
+          </div>
+        </div>
+
+        <div class="dropdown-container">
+          <button class="menu dropdown-toggle">Options</button>
+          <div class="dropdown hidden">
+            <a href="#">Save</a>
+            <a href="#">Load</a>
+            <a href="#">Export</a>
+          </div>
+        </div>
+
+        <div class="dropdown-container">
+          <button class="menu dropdown-toggle">View</button>
+          <div class="dropdown hidden">
+            <a href="#">Zoom In</a>
+            <a href="#">Zoom Out</a>
+            <a href="#">Reset View</a>
+          </div>
+        </div>
       </div>
+
       <div class="right-division">
         <button class="menu">About</button>
       </div>
     </div>
+
     <div class="general-container">
       <div class="controls">
         <div class="actions-container">
           <div class="header-actions">
-            <button class="context">
-              <i style='font-size:15px' class="fa">&#xf0d9;</i>
-            </button>
-            <button class="context">
-              <i style='font-size:15px' class="fa">&#xf0da;</i>
-            </button>
-            <button class="context" onclick="saveWalls()">
-              <i style="font-size:15px" class="fa">&#xf0c7;</i>
-            </button>
-            <b>AutoSave</b> <label class="switch">
+            <button class="context"><i class="fa">&#xf0d9;</i></button>
+            <button class="context"><i class="fa">&#xf0da;</i></button>
+            <button class="context" onclick="saveWalls()"><i class="fa">&#xf0c7;</i></button>
+            <b>AutoSave</b>
+            <label class="switch">
               <input type="checkbox">
               <span class="slider round"></span>
             </label>
@@ -46,6 +67,7 @@
             <canvas id="mapCanvas"></canvas>
           </div>
         </div>
+
         <div class="context-menu">
           <div class="search-container">
             <label>
@@ -65,75 +87,108 @@
             </div>
           </div>
 
-          <div class="context-item-container">
+          <div class="context-item-container" data-target="submenu-desks">
             Desks
             <div class="item-right">
-              <button style="font-size:20px" class="fa element-select toggle-submenu"
-                data-target="submenu-desks">&#xf107;</button>
+              <button class="fa element-select toggle-submenu" data-type="desk">&#xf107;</button>
             </div>
           </div>
+
           <div id="submenu-desks" class="submenu hidden">
-            <div class="submenu-item">Desk 1</div>
-            <div class="submenu-item">Desk 2</div>
+            <div class="submenu-item element-select" data-type="desk">Desk 1</div>
+            <div class="submenu-item element-select" data-type="desk">Desk 2</div>
           </div>
 
-          <div class="context-item-container">
+          <div class="context-item-container" data-target="submenu-shelves">
             Shelves
             <div class="item-right">
-              <button style="font-size:20px" class="fa element-select toggle-submenu"
-                data-target="submenu-shelves">&#xf107;</button>
+              <button class="fa element-select toggle-submenu">&#xf107;</button>
             </div>
           </div>
           <div id="submenu-shelves" class="submenu hidden">
-            <div class="submenu-item">Shelf 1</div>
+            <div class="submenu-item element-select" data-type="shelf">Shelf 1</div>
           </div>
 
-          <div class="context-item-container">
+          <div class="context-item-container" data-target="submenu-windows">
             Windows
             <div class="item-right">
-              <button style="font-size:20px" class="fa element-select toggle-submenu"
-                data-target="submenu-windows">&#xf107;</button>
+              <button class="fa element-select toggle-submenu">&#xf107;</button>
             </div>
           </div>
           <div id="submenu-windows" class="submenu hidden">
-            <div class="submenu-item">Window 1</div>
+            <div class="submenu-item element-select" data-type="window">Window 1</div>
           </div>
 
-          <div class="context-item-container">
+          <div class="context-item-container" data-target="submenu-doors">
             Doors
             <div class="item-right">
-              <button style="font-size:20px" class="fa element-select toggle-submenu"
-                data-target="submenu-doors">&#xf107;</button>
+              <button class="fa element-select toggle-submenu">&#xf107;</button>
             </div>
           </div>
           <div id="submenu-doors" class="submenu hidden">
-            <div class="submenu-item">Door 1</div>
+            <div class="submenu-item element-select" data-type="door">Door 1</div>
           </div>
 
-          <div class="context-item-container">
+          <div class="context-item-container" data-target="submenu-varied">
             Varied
             <div class="item-right">
-              <button style="font-size:20px" class="fa element-select toggle-submenu"
-                data-target="submenu-varied">&#xf107;</button>
+              <button class="fa element-select toggle-submenu">&#xf107;</button>
             </div>
           </div>
           <div id="submenu-varied" class="submenu hidden">
-            <div class="submenu-item">Varied 1</div>
+            <div class="submenu-item element-select" data-type="varied">Varied 1</div>
           </div>
 
           <div id="left">
-          <i style="font-size:24px" class="fa">&#xf104;</i>
+            <i style="font-size:24px" class="fa">&#xf104;</i>
           </div>
-
         </div>
       </div>
+
       <div class="footer">
-        project name
-        site language
+        project name | site language
       </div>
     </div>
+  </div>
 
-    <script src="/js/script.js"></script>
+  <script>
+    // Toggle menu header
+    document.addEventListener("click", () => {
+      document.querySelectorAll(".dropdown").forEach(dropdown => {
+        dropdown.classList.add("hidden");
+      });
+    });
+
+    document.querySelectorAll(".dropdown-toggle").forEach(button => {
+      button.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const dropdown = button.nextElementSibling;
+        const isHidden = dropdown.classList.contains("hidden");
+        document.querySelectorAll(".dropdown").forEach(d => d.classList.add("hidden"));
+        if (isHidden) dropdown.classList.remove("hidden");
+      });
+    });
+
+    document.querySelectorAll(".dropdown").forEach(dropdown => {
+      dropdown.addEventListener("click", (e) => e.stopPropagation());
+    });
+
+    //Toggle sidemenu
+    window.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll('.context-item-container').forEach(container => {
+        container.addEventListener('click', () => {
+          const targetId = container.getAttribute('data-target');
+          const submenu = document.getElementById(targetId);
+
+          if (submenu) {
+            submenu.classList.toggle('hidden');
+          }
+        });
+      });
+    });
+  </script>
+
+  <script src="/js/script.js"></script>
 </body>
 
 </html>

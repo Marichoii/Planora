@@ -11,18 +11,16 @@
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
   color: #333;
-  position: fixed;
   width: 100%;
   height: 100%;
-  padding: 0;
-  margin: 0;
+  overflow: hidden;
 }
 
 .main-division {
@@ -35,9 +33,15 @@ body {
 .general-container {
   display: flex;
   flex-direction: column;
-  background-color: #fefefe; 
+  background-color: #fefefe;
   height: 90%;
-  overflow: hidden; 
+  overflow: hidden;
+}
+
+.left-division {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .right-division {
@@ -45,8 +49,8 @@ body {
   align-items: center;
   gap: 0.5rem;
   padding-right: 1rem;
-  position: relative; 
-} 
+  position: relative;
+}
 
 .controls,
 .grid {
@@ -62,13 +66,14 @@ body {
 
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   height: 6vh;
   background-color: #dbdee2;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
   padding: 0 1rem;
   box-sizing: border-box;
+  gap: 0.5rem;
 }
 
 .header button {
@@ -90,6 +95,50 @@ body {
   padding: 0 0.5rem;
   gap: 0.5rem;
   box-sizing: border-box;
+}
+
+.menu {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 6px 10px;
+}
+
+.dropdown-container {
+  position: relative;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+}
+
+.dropdown a {
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  color: #333;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.dropdown a:hover {
+  background-color: #f1f3f5;
+}
+
+.hidden {
+  display: none;
 }
 
 .context-menu {
@@ -171,6 +220,7 @@ body {
   border-left: 2px solid #ccc;
   transition: all 0.2s ease-in-out;
 }
+
 .left {
   width: 20%;
   height: 100%;
@@ -234,6 +284,7 @@ body {
 .hidden {
   display: none;
 }
+
 .grid {
   display: flex;
   height: 96%;
@@ -259,6 +310,12 @@ button {
   border: none;
   background: none;
 }
+
+.active-element {
+  outline: 2px solid #888;
+  border-radius: 4px;
+}
+
 
 .fa {
   color: #979797;
