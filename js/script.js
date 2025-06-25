@@ -13,19 +13,17 @@ let startPoint = null;
 let currentPoint = null;
 let history = [];
 let currentHistoryIndex = -1;
-let selectedElementType = 'wall'; // Tipo padrão
+let selectedElementType = 'wall'; 
 
-// Configuração de cores para cada tipo de elemento
 const elementColors = {
   wall: '#000000',
-  desk: '#4CAF50',    // Verde
-  shelf: '#2196F3',   // Azul
-  window: '#FFC107',  // Amarelo
-  door: '#F44336',    // Vermelho
-  varied: '#9C27B0'   // Roxo
+  desk: '#4CAF50',    
+  shelf: '#2196F3',   
+  window: '#FFC107',
+  door: '#F44336',    
+  varied: '#9C27B0'   
 };
 
-// Configuração de estilos para cada tipo de elemento
 const elementStyles = {
   wall: { width: 8, opacity: 'FF' },
   desk: { width: 6, opacity: 'FF' },
@@ -35,7 +33,6 @@ const elementStyles = {
   varied: { width: 6, opacity: 'FF' }
 };
 
-// Adiciona event listeners para os botões de seleção de elemento
 document.querySelectorAll('.element-select').forEach(button => {
   button.addEventListener('click', function () {
     selectedElementType = this.dataset.type;
@@ -354,6 +351,3 @@ const toggleButton = document.getElementById('toggleMenu');
 toggleButton.addEventListener('click', () => {
   sideMenu.classList.toggle('closed');
 });
-
-
-
